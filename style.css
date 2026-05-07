@@ -22,10 +22,11 @@ body {
     color: var(--text);
     margin: 0;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .app-container {
-    max-width: 500px;
+    max-width: 80%;
     margin: 0 auto;
     padding: 20px;
 }
@@ -65,6 +66,8 @@ input, select {
     padding: 8px 15px;
     border-radius: 4px;
     border: 1px solid #ddd;
+    margin: auto;
+    width: 90%;
     font-size: 16px;
     outline: none !important;
 }
@@ -174,4 +177,13 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.w100 {
+    width: 100%;
+}
+
+
+.block{
+    display: block;
 }
