@@ -101,14 +101,17 @@ deleteTagBtn.addEventListener('click', async () => {
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const editId = document.getElementById('edit-id').value;
     const expense = {
-        id: Date.now(),
+        id: editId ? Number(editId) : Date.now(),
         description: document.getElementById('description').value.trim(),
         amount: parseFloat(document.getElementById('amount').value),
         tag: tagSelect.value,
         date: document.getElementById('date').value
     };
     await saveToStore(STORE_EXPENSES, expense);
+    document.getElementById('edit-id').value = '';
+    form.querySelector('.btn-primary').textContent = 'Add Expense';
     render();
     form.reset();
     const d = new Date();
@@ -120,10 +123,27 @@ window.deleteExpense = async (id) => {
     render();
 };
 
+window.editExpense = async (id) => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth" // optional: adds smooth scrolling
+    });
+    const expenses = await getAllFromStore(STORE_EXPENSES);
+    const expense = expenses.find(ex => ex.id === id);
+    if (expense) {
+        document.getElementById('edit-id').value = expense.id;
+        document.getElementById('description').value = expense.description;
+        document.getElementById('amount').value = expense.amount;
+        document.getElementById('tag').value = expense.tag;
+        document.getElementById('date').value = expense.date;
+        form.querySelector('.btn-primary').textContent = 'Update Expense';
+    }
+};
+
 async function render() {
     const expenses = await getAllFromStore(STORE_EXPENSES);
     let filtered = [];
-    
+
     const startRangeDateValue = startDateFilterInput.value;
     const endRangeDateValue = endDateFilterInput.value;
     const selectedMonthValue = monthFilter.value;
@@ -160,6 +180,7 @@ async function render() {
             </div>
             <div class="expense-actions">
                 <strong>${ex.amount.toFixed(2)} DH</strong>
+                <button onclick="editExpense(${ex.id})" class="btn-edit">✎</button>
                 <button onclick="deleteExpense(${ex.id})" class="btn-delete">×</button>
             </div>
         </li>
