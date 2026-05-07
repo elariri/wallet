@@ -12,6 +12,7 @@ const addTagBtn = document.getElementById('add-tag-btn');
 const deleteTagBtn = document.getElementById('delete-tag-btn');
 const startDateFilterInput = document.getElementById('start-date-filter');
 const endDateFilterInput = document.getElementById('end-date-filter');
+let expenseChart = null;
 
 // Helper to get all items from an object store
 async function getAllFromStore(storeName) {
@@ -173,6 +174,7 @@ function calculateStats(data) {
 
     if (total === 0) {
         document.getElementById('tag-breakdown').innerHTML = '';
+        if (expenseChart) expenseChart.destroy();
         return;
     }
 
@@ -180,6 +182,7 @@ function calculateStats(data) {
     data.forEach(ex => {
         tagTotals[ex.tag] = (tagTotals[ex.tag] || 0) + ex.amount;
     });
+    updateChart(tagTotals);
 
     const breakdown = document.getElementById('tag-breakdown');
     breakdown.innerHTML = Object.keys(tagTotals).map(tag => {
@@ -196,6 +199,35 @@ function calculateStats(data) {
             </div>
         `;
     }).join('');
+}
+
+function updateChart(tagTotals) {
+    const ctx = document.getElementById('expense-chart').getContext('2d');
+    const labels = Object.keys(tagTotals);
+    const values = Object.values(tagTotals);
+
+    if (expenseChart) {
+        expenseChart.destroy();
+    }
+
+    expenseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
 }
 
 startDateFilterInput.addEventListener('change', render);

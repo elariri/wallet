@@ -10,6 +10,7 @@
     <meta name="theme-color" content="#6366f1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="wallet.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,9 @@
             <div id="summary">
                 <h3>Period Summary</h3>
                 <div id="total-amount">0.00DH</div>
+                <div class="chart-container">
+                    <canvas id="expense-chart"></canvas>
+                </div>
                 <div id="tag-breakdown"></div>
             </div>
         </section>
