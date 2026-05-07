@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendWise PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>SpendWise</h1>
+            <p>Track your monthly flow</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="card glass">
+            <form id="expense-form">
+                <input type="text" id="description" placeholder="Description (Optional)">
+                <input type="number" id="amount" placeholder="Amount (DH)" required step="0.01">
+                <div class="tag-input-group">
+                    <select id="tag"></select>
+                    <button type="button" id="delete-tag-btn" class="btn-secondary" style="background: #ef4444;"
+                        title="Delete selected tag">-</button>
+                    <input type="text" id="new-tag" placeholder="Add new tag">
+                    <button type="button" id="add-tag-btn" class="btn-secondary">+</button>
+                </div>
+                <input type="date" id="date" required>
+                <button type="submit" class="btn-primary">Add Expense</button>
+            </form>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="card glass stats">
+            <div class="filter-controls">
+                <label for="month-filter">Filter Month:</label>
+                <input type="month" id="month-filter">
+                <div>
+                    <label for="start-date-filter">From:</label>
+                    <input type="date" id="start-date-filter">
+                    <label for="end-date-filter">To:</label>
+                    <input type="date" id="end-date-filter">
+                </div>
+
+            </div>
+            <div id="summary">
+                <h3>Period Summary</h3>
+                <div id="total-amount">0.00DH</div>
+                <div id="tag-breakdown"></div>
+            </div>
+        </section>
+
+        <!-- List Section -->
+        <ul id="expense-list" class="expense-list"></ul>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+
+</html>
